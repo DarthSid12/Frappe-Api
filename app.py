@@ -176,9 +176,8 @@ Parser.add_argument('id', type=str, help='The fridge ID')
 
 class AddItem(Resource):
     def post(self):
-        args2 = Parser.parse_args()
-        image = args2['image']
-        fridge_id = args2['id']
+        image = request.headers.get('image')
+        fridge_id = request.headers.get('id')
         recognizedObjects = processImage(image)
 
         print("Recognised objects",recognizedObjects)
@@ -208,9 +207,8 @@ class AddItem(Resource):
 
 class DeleteItem(Resource):
     def post(self):
-        args2 = Parser.parse_args()
-        image = args2['image']
-        fridge_id = args2['id']
+        image = request.headers.get('image')
+        fridge_id = request.headers.get('id')
         recognizedObjects = processImage(image)
 
         print("Recognised objects", recognizedObjects)
