@@ -175,7 +175,7 @@ Parser.add_argument('image', type=str, help='Image base64 string')
 Parser.add_argument('id', type=str, help='The fridge ID')
 
 class AddItem(Resource):
-    def get(self):
+    def post(self):
         args2 = Parser.parse_args()
         image = args2['image']
         fridge_id = args2['id']
