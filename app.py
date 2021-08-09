@@ -26,33 +26,17 @@ firestore_db = firestore.client()
 
 foodObjects = ["apple", "banana", "sandwich", "orange", "broccoli", "carrot", "donut", "cake", "pizza", "hot dog"]
 
-# Define and parse input arguments
-parser = argparse.ArgumentParser()
-
-parser.add_argument('--graph', help='Name of the .tflite file, if different than detect.tflite',
-                    default='detect.tflite')
-parser.add_argument('--labels', help='Name of the labelmap file, if different than labelmap.txt',
-                    default='labelmap.txt')
-parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
-                    default=0.5)
-parser.add_argument('--modeldir', help='Folder the .tflite file is located in',
-                    default="coco_ssd_mobilenet_v1")
-parser.add_argument('--resolution',
-                    help='Desired webcam resolution in WxH. If the webcam does not support the resolution entered, errors may occur.',
-                    default='1280x720')
-parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
-                    action='store_true')
-
-args = parser.parse_args()
-
-MODEL_NAME = args.modeldir
+# Define and parse input arg
+MODEL_NAME = "coco_ssd_mobilenet_v1"
 print("Model Name =",MODEL_NAME)
-GRAPH_NAME = args.graph
-LABELMAP_NAME = args.labels
-min_conf_threshold = float(args.threshold)
-resW, resH = args.resolution.split('x')
+GRAPH_NAME = 'detect.tflite'
+LABELMAP_NAME = "labelmap.txt"
+min_conf_threshold = float(0.5)
+resW, resH = "1280x720".split('x')
 imW, imH = int(resW), int(resH)
-use_TPU = args.edgetpu
+use_TPU = False
+
+print("Use TPU:-",use_TPU)
 
 # Import TensorFlow libraries
 # If tflite_runtime is installed, import interpreter from tflite_runtime, else import from regular tensorflow
@@ -247,4 +231,4 @@ api.add_resource(Test, '/')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
