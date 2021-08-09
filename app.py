@@ -36,7 +36,7 @@ parser.add_argument('--labels', help='Name of the labelmap file, if different th
 parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                     default=0.5)
 parser.add_argument('--modeldir', help='Folder the .tflite file is located in',
-                    required=True)
+                    default="coco_ssd_mobilenet_v1")
 parser.add_argument('--resolution',
                     help='Desired webcam resolution in WxH. If the webcam does not support the resolution entered, errors may occur.',
                     default='1280x720')
@@ -46,6 +46,7 @@ parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed u
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
+print("Model Name =",MODEL_NAME)
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
 min_conf_threshold = float(args.threshold)
@@ -176,8 +177,11 @@ Parser.add_argument('id', type=str, help='The fridge ID')
 
 class AddItem(Resource):
     def post(self):
-        image = request.headers.get('image')
-        fridge_id = request.headers.get('id')
+        args2 = Parser.parse_args()
+        # image = args2['image']
+        image = request.headers['image']
+        # fridge_id = args2['id']
+        fridge_id = request.headers['id']
         recognizedObjects = processImage(image)
 
         print("Recognised objects",recognizedObjects)
@@ -207,8 +211,9 @@ class AddItem(Resource):
 
 class DeleteItem(Resource):
     def post(self):
-        image = request.headers.get('image')
-        fridge_id = request.headers.get('id')
+        args2 = Parser.parse_args()
+        image = args2['image']
+        fridge_id = args2['id']
         recognizedObjects = processImage(image)
 
         print("Recognised objects", recognizedObjects)
