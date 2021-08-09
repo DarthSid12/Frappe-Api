@@ -79,7 +79,6 @@ proto-plus==1.18.1
 protobuf==3.17.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-PyAudio @ file:///C:/Users/heman/pipwin/PyAudio-0.2.11-cp39-cp39-win_amd64.whl
 pycparser==2.20
 pygame==2.0.1
 pyjokes==0.6.0
