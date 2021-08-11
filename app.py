@@ -145,7 +145,7 @@ class AddItem(Resource):
         print(image)
         # fridge_id = args2['id']
         fridge_id = request.form['id']
-        if (request.form['code'] != secret.SECRET_VERIFICATION_CODE):
+        if (request.form['code'] != "superSecretFrappeCodeIs90964532"):
             return {'completed': False, "Reason": "Incorrect verification code"}
 
         # fridge_id = '2PJvDrpYIUZfQ3DLufj5'
@@ -184,7 +184,7 @@ class DeleteItem(Resource):
         print(image)
         # fridge_id = args2['id']
         fridge_id = request.form['id']
-        if (request.form['code']!=secret.SECRET_VERIFICATION_CODE):
+        if (request.form['code']!="superSecretFrappeCodeIs90964532"):
             return {'completed':False,"Reason":"Incorrect verification code"}
 
         recognizedObjects = processImage(image)
