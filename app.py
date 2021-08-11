@@ -145,11 +145,12 @@ class AddItem(Resource):
         print(image)
         # fridge_id = args2['id']
         fridge_id = request.form['id']
-
+        if (request.form['code'] != "superSecretFrappeCode"):
+            return {'completed': False, "Reason": "Incorrect verification code"}
 
         # fridge_id = '2PJvDrpYIUZfQ3DLufj5'
         recognizedObjects = processImage(image)
-
+        outputObjects = []
         print("Recognised objects",recognizedObjects)
         for ob in recognizedObjects:
             if ob['object'] in foodObjects:
@@ -171,7 +172,9 @@ class AddItem(Resource):
                 print("Almost here 4")
                 itemReference.update({'items':fire.ArrayUnion([int(time.time() * 1000)])})
                 print("Almost here 5")
-        output = {'completed':True}
+                outputObjects.append(ob['object'])
+
+        output = {'completed':True,'objects':outputObjects}
         return output
 
 
@@ -181,8 +184,11 @@ class DeleteItem(Resource):
         print(image)
         # fridge_id = args2['id']
         fridge_id = request.form['id']
-        recognizedObjects = processImage(image)
+        if (request.form['code']!="superSecretFrappeCode"):
+            return {'completed':False,"Reason":"Incorrect verification code"}
 
+        recognizedObjects = processImage(image)
+        outputObjects = []
         print("Recognised objects", recognizedObjects)
         for ob in recognizedObjects:
             if ob['object'] in foodObjects:
@@ -194,7 +200,8 @@ class DeleteItem(Resource):
                     itemReference.update({'items': fire.ArrayRemove([x])})
                 except:
                     pass
-        output = {'completed': True}
+                outputObjects.append(ob['object'])
+        output = {'completed': True,'objects':outputObjects}
         return output
         # use parser and find the user's query
 
