@@ -20,7 +20,7 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 firestore_db = firestore.client()
-
+secretCode = "superSecretFrappeCodeIs90964532"
 foodObjects = ["apple", "banana", "sandwich", "orange", "broccoli", "carrot", "donut", "cake", "pizza", "hot dog"]
 
 # Define and parse input arg
@@ -145,7 +145,7 @@ class AddItem(Resource):
         print(image)
         # fridge_id = args2['id']
         fridge_id = request.form['id']
-        if (request.form['code'] != "superSecretFrappeCodeIs90964532"):
+        if (request.form['code'] != secretCode):
             return {'completed': False, "Reason": "Incorrect verification code"}
 
         # fridge_id = '2PJvDrpYIUZfQ3DLufj5'
@@ -184,7 +184,7 @@ class DeleteItem(Resource):
         print(image)
         # fridge_id = args2['id']
         fridge_id = request.form['id']
-        if (request.form['code']!="superSecretFrappeCodeIs90964532"):
+        if (request.form['code']!=secretCode):
             return {'completed':False,"Reason":"Incorrect verification code"}
 
         recognizedObjects = processImage(image)
@@ -205,6 +205,23 @@ class DeleteItem(Resource):
         return output
         # use parser and find the user's query
 
+class ProcessImage(Resource):
+    def post(self):
+        image = request.form['image']
+        print(image)
+        # fridge_id = args2['id']
+        if (request.form['code']!=secretCode):
+            return {'completed':False,"Reason":"Incorrect verification code"}
+
+        recognizedObjects = processImage(image)
+        outputObjects = []
+        print("Recognised objects", recognizedObjects)
+        for ob in recognizedObjects:
+            if ob['object'] in foodObjects:
+                outputObjects.append(ob['object'])
+        output = {'completed': True,'objects':outputObjects}
+        return output
+        # use parser and find the user's query
 
 
 class Test(Resource):
@@ -217,6 +234,7 @@ class Test(Resource):
 
 api.add_resource(AddItem, '/add')
 api.add_resource(DeleteItem, '/delete')
+api.add_resource(ProcessImage, '/process')
 api.add_resource(Test, '/')
 
 
